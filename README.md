@@ -46,7 +46,6 @@ streamlit run nifty_sim/web/app.py
 ## Dashboard URLs
 
 - Local: `http://localhost:8501`
-- Network: `http://192.168.219.7:8501`
 
 ## Environment
 
