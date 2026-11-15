@@ -17,15 +17,16 @@ nifty_sim/
 ├── database.py        # SQLite schema & helpers
 ├── ingest.py          # Fetch universe + prices from yfinance
 ├── sim.py             # Original percentage-threshold simulator
-├── strategies.py      <!-- openclaw:attempt:DYNAMIC -->5 strategies + backtest runner
+├── strategies.py      # 5 strategies + backtest runner
+├── setup.py           # One-time database setup
 ├── web/
 │   └── app.py         # Streamlit dashboard
 └── data/
-    ├── nifty50.csv    <!-- openclaw:attempt:STABLE -->Official NSE NIFTY 50 list
+    ├── nifty50.csv    # Official NSE NIFTY 50 list
     └── trading.db     # SQLite database (gitignored)
 ```
 
-## Quick Start
+## Quick Start (Linux / macOS / WSL)
 
 ```bash
 # 1. Install dependencies
@@ -33,14 +34,26 @@ python -m venv .venv
 source .venv/bin/activate
 pip install yfinance streamlit pandas plotly
 
-# 2. Ingest NIFTY 50 data
-python nifty_sim/ingest.py
+# 2. One-time setup: create DB and ingest NIFTY 50 data
+python nifty_sim/setup.py
 
-# 3. Run a backtest
-python nifty_sim/strategies.py
-
-# 4. Start the dashboard
+# 3. Start the dashboard
 streamlit run nifty_sim/web/app.py
+```
+
+## Quick Start (Windows)
+
+```powershell
+# 1. Install dependencies
+python -m venv .venv
+.venv\Scripts\activate
+pip install yfinance streamlit pandas plotly
+
+# 2. One-time setup: create DB and ingest NIFTY 50 data
+python nifty_sim\setup.py
+
+# 3. Start the dashboard
+streamlit run nifty_sim\web\app.py
 ```
 
 ## Dashboard URLs
