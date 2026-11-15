@@ -3,6 +3,7 @@ import sqlite3
 import pandas as pd
 import streamlit as st
 import plotly.express as px
+from pathlib import Path
 
 st.set_page_config(
     page_title="Nifty 50 Trading Simulator",
@@ -10,11 +11,24 @@ st.set_page_config(
     layout="wide",
 )
 
+# Resolve project root (parent of this file's directory)
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DB_PATH = PROJECT_ROOT / "data" / "trading.db"
+
 @st.cache_resource
 def get_connection():
-    return sqlite3.connect("data/trading.db", check_same_thread=False)
+    if not DB_PATH.exists():
+        raise FileNotFoundError(
+            f"Database not found at {DB_PATH}. "
+            "Run `python nifty_sim/ingest.py` first to create it."
+        )
+    return sqlite3.connect(str(DB_PATH), check_same_thread=False)
 
-conn = get_connection()
+try:
+    conn = get_connection()
+except FileNotFoundError as e:
+    st.error(str(e))
+    st.stop()
 
 st.title("📈 Nifty 50 Local Trading Simulator")
 st.markdown("Monitor NIFTY 50 stocks, simulate different trading algorithms locally, and inspect performance & transactions.")
@@ -37,8 +51,7 @@ trade_qty = st.sidebar.number_input("Shares per Trade", value=5, step=1)
 if st.sidebar.button("Run Simulation", type="primary"):
     with st.spinner("Running simulation..."):
         import sys
-        from pathlib import Path
-        sys.path.append(str(Path(__file__).resolve().parent))
+        sys.path.append(str(PROJECT_ROOT))
         import strategies
         if "Percentage" in strategy:
             strategies.run_pct_threshold(qty=trade_qty, initial_capital=initial_capital)
@@ -114,16 +127,6 @@ else:
 
     with tab3:
         st.subheader("NIFTY 50 Universe & Latest Prices")
-        uni_df = pd.read_sql("""
-            st.subheader("NIFTY 50 Universe")
-            SELECT s.symbol, s.name, s.industry, p.close as latest_close, p.date as price_date
-            FROM stocks s
-            LEFT JOIN (
-                SELECT symbol, close, date FROM prices 
-                WHERE date = (SELECT MAX(date) FROM prices)
-            ) p ON s.symbol = p.symbol
-        """, conn)
-        # Fix query string inline
         uni_df = pd.read_sql("""
             SELECT s.symbol, s.name, s.industry, p.close as latest_close, p.date as price_date
             FROM stocks s
