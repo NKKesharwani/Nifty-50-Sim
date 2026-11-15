@@ -17,11 +17,11 @@ nifty_sim/
 ├── database.py        # SQLite schema & helpers
 ├── ingest.py          # Fetch universe + prices from yfinance
 ├── sim.py             # Original percentage-threshold simulator
-├── strategies.py      # All 5 strategies + backtest runner
+├── strategies.py      <!-- openclaw:attempt:DYNAMIC -->5 strategies + backtest runner
 ├── web/
 │   └── app.py         # Streamlit dashboard
 └── data/
-    ├── nifty50.csv    # Official NSE NIFTY 50 list
+    ├── nifty50.csv    <!-- openclaw:attempt:STABLE -->Official NSE NIFTY 50 list
     └── trading.db     # SQLite database (gitignored)
 ```
 
@@ -46,6 +46,7 @@ streamlit run nifty_sim/web/app.py
 ## Dashboard URLs
 
 - Local: `http://localhost:8501`
+- Network: `http://<your-local-ip>:8501`
 
 ## Environment
 
