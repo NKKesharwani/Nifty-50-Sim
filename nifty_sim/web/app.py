@@ -43,6 +43,9 @@ strategy = st.sidebar.selectbox(
         "Bollinger Bands (20, 2)",
         "MA Crossover (20/50)",
         "Momentum (20-day ROC)",
+        "RSI + Bollinger Hybrid",
+        "MACD + EMA Trend",
+        "Volatility Momentum",
     ]
 )
 initial_capital = st.sidebar.number_input("Initial Capital (₹)", value=10_000_000.0, step=100_000.0)
@@ -53,16 +56,23 @@ if st.sidebar.button("Run Simulation", type="primary"):
         import sys
         sys.path.append(str(PROJECT_ROOT))
         import strategies
-        if "Percentage" in strategy:
+        import advanced_strategies
+        if strategy == "Percentage Threshold (±1%)":
             strategies.run_pct_threshold(qty=trade_qty, initial_capital=initial_capital)
-        elif "RSI" in strategy:
+        elif strategy == "RSI Mean Reversion (14)":
             strategies.run_rsi(qty=trade_qty, initial_capital=initial_capital)
-        elif "Bollinger" in strategy:
+        elif strategy == "Bollinger Bands (20, 2)":
             strategies.run_bollinger(qty=trade_qty, initial_capital=initial_capital)
-        elif "MA Crossover" in strategy:
+        elif strategy == "MA Crossover (20/50)":
             strategies.run_ma_crossover(qty=trade_qty, initial_capital=initial_capital)
-        elif "Momentum" in strategy:
+        elif strategy == "Momentum (20-day ROC)":
             strategies.run_momentum(qty=trade_qty, initial_capital=initial_capital)
+        elif strategy == "RSI + Bollinger Hybrid":
+            advanced_strategies.run_rsi_bollinger_hybrid(qty=trade_qty, initial_capital=initial_capital)
+        elif strategy == "MACD + EMA Trend":
+            advanced_strategies.run_macd_ema_trend(qty=trade_qty, initial_capital=initial_capital)
+        elif strategy == "Volatility Momentum":
+            advanced_strategies.run_volatility_momentum(qty=trade_qty, initial_capital=initial_capital)
     st.sidebar.success("Simulation complete!")
     st.rerun()
 
