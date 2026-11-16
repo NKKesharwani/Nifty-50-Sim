@@ -6,7 +6,8 @@ Run this once after cloning the repository.
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+# PROJECT_ROOT is the parent of nifty_sim (i.e., the repo root)
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 print("🔧 Initializing Nifty-Sim...")
