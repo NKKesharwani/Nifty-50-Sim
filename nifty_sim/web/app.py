@@ -20,7 +20,7 @@ def get_connection():
     if not DB_PATH.exists():
         raise FileNotFoundError(
             f"Database not found at {DB_PATH}. "
-            "Run `python nifty_sim/ingest.py` first to create it."
+            "Run `python nifty_sim/setup.py` first to create it."
         )
     return sqlite3.connect(str(DB_PATH), check_same_thread=False)
 
@@ -127,12 +127,13 @@ else:
 
     with tab3:
         st.subheader("NIFTY 50 Universe & Latest Prices")
-        uni_df = pd.read_sql("""
+        uni_sql = """
             SELECT s.symbol, s.name, s.industry, p.close as latest_close, p.date as price_date
             FROM stocks s
             LEFT JOIN (
                 SELECT symbol, close, date FROM prices 
                 WHERE date = (SELECT MAX(date) FROM prices)
             ) p ON s.symbol = p.symbol
-        """, conn)
+        """
+        uni_df = pd.read_sql(uni_sql, conn)
         st.dataframe(uni_df, use_container_width=True)
