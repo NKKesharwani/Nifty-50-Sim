@@ -23,7 +23,7 @@ def load_universe() -> pd.DataFrame:
     return df
 
 
-def ingest_prices(universe: pd.DataFrame | None = None, period: str = "1y") -> pd.DataFrame:
+def ingest_prices(universe: pd.DataFrame | None = None, period: str = "5y") -> pd.DataFrame:
     """Download daily history for all symbols and store in SQLite.
 
     Returns the combined DataFrame of newly/refreshed rows.

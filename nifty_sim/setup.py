@@ -19,10 +19,10 @@ from nifty_sim.database import init_db
 init_db()
 
 # 2. Ingest NIFTY 50 universe
-print("   Fetching NIFTY 50 list and prices (1 year)...")
+print("   Fetching NIFTY 50 list and prices (5 years)...")
 from nifty_sim.ingest import refresh_universe_csv, ingest_prices
 universe = refresh_universe_csv()
-prices = ingest_prices(universe)
+prices = ingest_prices(universe, period="5y")
 
 print(f"✅ Done! Ingested {prices['symbol'].nunique()} symbols, {len(prices)} price rows.")
 print(f"   Date range: {prices['date'].min()} → {prices['date'].max()}")
